@@ -60,7 +60,6 @@ class MultipleEnvironmentImageFolder(MultipleDomainDataset):
         for env in environments:
             path = os.path.join(root, env)
             env_dataset = ImageFolder(path)
-
             self.datasets.append(env_dataset)
 
         self.input_shape = (3, 224, 224)
