@@ -62,7 +62,7 @@ def get_dataset(test_envs, args, hparams, algorithm_class=None):
             misc.seed_hash(args.trial_seed, env_i)
         )
         if env_i in test_envs:
-            in_type = 'test',
+            in_type = 'test'
             out_type = 'test'
         else:
             in_type = 'train'
@@ -79,7 +79,7 @@ def get_dataset(test_envs, args, hparams, algorithm_class=None):
             in_weights, out_weights = None, None
 
         in_splits.append((in_, in_weights))
-        out_splits.append(out, out_weights)
+        out_splits.append((out, out_weights))
 
     return dataset, in_splits, out_splits
 
