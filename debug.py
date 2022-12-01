@@ -61,3 +61,24 @@ timestamp = misc.timestamp()
 args.unique_name = f'{timestamp}_{args.name}'
 print('Unique Name')
 print(args.unique_name, '\n')
+
+args.work_dir = Path('.') # 현재 workspace 디렉토리를 기준으로 Path 객체 생성
+args.data_dir = Path(args.data_dir)
+
+args.out_root = args.work_dir / Path('train_output') / args.dataset # os.path.join 처럼 '/' 로 경로를 연결
+
+print('Out Root')
+print(args.out_root, '\n')
+
+args.out_dir = args.out_root / args.unique_name
+args.out_dir.mkdir(exist_ok=True, parents=True) # 누락된 부모 디렉토리가 있으면 만듦
+
+print('Out Directory')
+print(args.out_dir, '\n')
+
+writer = get_writer(args.out_root / 'runs' / args.unique_name)
+
+logger = Logger.get(args.out_dir / 'log.txt')
+
+cmd = ' '.join(sys.argv)
+
