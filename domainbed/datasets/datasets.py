@@ -46,7 +46,7 @@ class MultipleDomainDataset:
         '''
         sub-dataset의 개수를 반환, 즉 몇개의 domain으로 구성되어있는지 반환
         '''
-        return len(self.datsets)
+        return len(self.datasets)
 
 
 class MultipleEnvironmentImageFolder(MultipleDomainDataset):
