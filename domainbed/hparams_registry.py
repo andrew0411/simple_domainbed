@@ -16,7 +16,7 @@ def _hparams(algorithm, dataset, random_state):
 
     hparams['freeze_bn'] = (True, True)
     hparams['pretrained'] = (True, True) # ResNet 사용할 때만
-
+ 
     hparams['lr'] = (5e-5, 10 ** random_state.uniform(-5, -3.5))
     if dataset == 'DomainNet':
         hparams['batch_size'] = (32, int(2 ** random_state.uniform(3, 5)))
@@ -40,6 +40,11 @@ def _hparams(algorithm, dataset, random_state):
         hparams['mlp_width'] = (256, int(2 ** random_state.uniform(6, 10)))
         hparams['mlp_depth'] = (3, int(random_state.choice([3, 4, 5])))
         hparams['mlp_dropout'] = (0.0, random_state.choice([0.0, 0.1, 0.5]))
+
+    elif algorithm == 'TTA':
+        hparams['tta_mix'] = (0.1, random_state.uniform(0., 0.1))
+        hparams['tta_cut'] = (0.2, random_state.uniform(0., 0.25))
+        hparams['cellsize'] = (10, int(10 ** random_state.uniform(1, 1.5)))
 
     elif algorithm == 'RSC':
         hparams['rsc_f_drop_factor'] = (1 / 3, random_state.uniform(0, 0.5))
