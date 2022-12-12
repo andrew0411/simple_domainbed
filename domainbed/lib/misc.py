@@ -49,8 +49,59 @@ def seed_hash(*args):
     return int(hashlib.md5(args_str.encode('utf-8')).hexdigest(), 16) % (2 ** 31) # hashlib 을 사용해서 md5 암호화
 
 
+def to_row(row, colwidth=10, latex=False):
+    if latex:
+        sep = ' & '
+        end_ = '\\\\'
+
+    else:
+        sep = ' '
+        end_ = ''
+
+    def format_val(x):
+        if np.issubdtype(type(x), np.floating):
+            x = '{:.6f}'.format(x)
+        return str(x).ljust(colwidth)[:colwidth]
+
+    return sep.join([format_val(x) for x in row]) + ' ' + end_
+
+
 def timestamp(fmt='%y%m%d_%H-%M-%S'):
     return datetime.now().strftime(fmt)
 
 
-print(timestamp())
+def index_conditional_iterate(skip_condition, iterable, index):
+    for i, x in enumerate(iterable):
+        if skip_condition(i):
+            continue
+
+        if index:
+            yield i, x
+
+        else:
+            yield x
+
+
+class SplitIterator:
+    def __init__(self, test_envs):
+        self.test_envs = test_envs
+
+    def train(self, iterable, index=False):
+        '''
+        만약 test_env에 속해있으면 넘어가고 아니면 그 index를 반환
+        '''
+        return index_conditional_iterate(lambda idx: idx in self.test_envs, iterable, index) 
+
+    def test(self, iterable, index=False):
+        return index_conditional_iterate(lambda idx: idx not in self.test_envs, iterable, index)
+
+
+def merge_dictlist(dictlist):
+    ret = {
+        k: []
+        for k in dictlist[0].keys()
+    }
+    for dic in dictlist:
+        for data_key, v in dic.items():
+            ret[data_key].append(v)
+    return ret
